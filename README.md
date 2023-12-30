@@ -13,7 +13,7 @@ submiting scores
 ~~Add score submitting~~ DONE <br/>
 make api <br/>
 make frontend <br/>
-Documentation of Osu! b222 protcol
+Documentation of Osu! b222 protcol <br/>
 Make server stable
 
 ### How to Compile, if you don't want just download build from releases
