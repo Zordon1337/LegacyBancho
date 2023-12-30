@@ -148,6 +148,7 @@
     <Compile Include="DB.cs" />
     <Compile Include="Handlers\Auth.cs" />
     <Compile Include="Handlers\Score.cs" />
+    <Compile Include="Handlers\Static.cs" />
     <Compile Include="Handlers\Stats.cs" />
     <Compile Include="Helpers\Calculate.cs" />
     <Compile Include="Helpers\Logging.cs" />

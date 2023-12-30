@@ -182,7 +182,10 @@ namespace LegacyBancho
                     return Convert.ToBase64String(Encoding.UTF8.GetBytes("server does NOT know what are you yapping about"));
                 }
             });
-
+            http.get("/", "text/html", queryparams =>
+            {
+                return Handlers.Static.HandleIndex();
+            });
             Console.ReadKey(); // we don't want to auto-close the server after initalizing
         }
     }

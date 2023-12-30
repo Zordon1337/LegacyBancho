@@ -16,6 +16,7 @@ namespace LegacyBancho.Handlers
         public static string HandleStatoth(MySqlConnection connection, string u)
         {
             int totalplayerscore = Helpers.Calculate.GetPlayerTotalScore(connection, u); // getting it before any action cuz i don't want to trigger error
+            int rank = user.GetPlayersRank(connection, u); // same as above
             if(connection.State != System.Data.ConnectionState.Open)
             {
                 try
@@ -47,7 +48,7 @@ namespace LegacyBancho.Handlers
             {
                 
                 
-                prepared = $"{totalplayerscore}|{reader["Accuracy"].ToString()}|unknown1|unknown2|{reader["CurrentRank"].ToString()}|{reader["UserId"].ToString()}.png";
+                prepared = $"{totalplayerscore}|{reader["Accuracy"].ToString()}|unknown1|unknown2|{rank}|{reader["UserId"].ToString()}.png";
             }
             else
             {

@@ -23,7 +23,7 @@ namespace LegacyBancho.Helpers
                 var result = command.ExecuteReader();
                 try
                 {
-                    if(result.HasRows)
+                    if (result.HasRows)
                     {
                         return result;
                     }
@@ -35,7 +35,7 @@ namespace LegacyBancho.Helpers
                     result.Close();
                     return null;
                 }
-                
+
             }
         }
         public bool UpdateTotalScore(MySqlConnection connection, int uid, int NewScore)
@@ -46,19 +46,46 @@ namespace LegacyBancho.Helpers
                 command.Parameters.AddWithValue("@score", NewScore);
                 command.Parameters.AddWithValue("@uid", uid);
 
-                if(connection.State != ConnectionState.Open)
+                if (connection.State != ConnectionState.Open)
                     connection.Open();
 
                 try
                 {
                     command.ExecuteNonQuery();
                     return true;
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     logs.LogError("An error occured in UpdateTotalScore()\n " + ex.Message);
                     return false;
                 }
 
+            }
+        }
+        public int GetPlayersRank(MySqlConnection connection, string username)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT * FROM `users` ORDER BY Score";
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                        return 0; // imposibble situation, but just in case someone manages to attempt to get rank without an account
+                    int rank = 1;
+                    while (reader.Read())
+                    {
+                        string userfromdb = reader["Username"].ToString();
+                        if (userfromdb == username)
+                            return rank;
+                        else
+                        {
+                            rank++;
+                        }
+                    }
+                    return -1; // there is no such user in db
+                }
             }
         }
     }
