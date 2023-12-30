@@ -6,13 +6,13 @@ Basic Authenticating without database
 Loading Global Scores(currently random score without database)
 Loading Players Stats(currently server setting because no db)
 ```
-### What i want to add
-```
-Move everything to mysql
-Add score submitting
+### TODO
+
+~~Move everything to mysql~~ DONE
+~~Add score submitting~~ DONE
 make api
 make frontend
-```
+
 
 ### How to Compile, if you don't want just download build from releases
 
