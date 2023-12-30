@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LegacyBancho
 {
-    public class database
+    public class DB
     {
         public static string username = "root";
         public static string password = "";

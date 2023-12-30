@@ -11,15 +11,15 @@ namespace LegacyBancho.Helpers
         public void LogError(string ERROR)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("\n[ERROR] ");
+            Console.Write("[ERROR] ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(ERROR);
+            Console.Write(ERROR+"\n");
         }
         public void LogInfo(string ERROR)
         {
-            Console.Write("\n[Info] ");
+            Console.Write("[Info] ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(ERROR);
+            Console.Write(ERROR+"\n");
         }
     }
 }

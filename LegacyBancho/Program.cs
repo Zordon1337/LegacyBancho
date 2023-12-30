@@ -15,18 +15,37 @@ namespace LegacyBancho
      */
     internal class Program
     {
+
         static void Main(string[] args)
         {
+            // initalizing logs
+            Helpers.Logging log = new Helpers.Logging();
+            // ascii art :)
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@"
+              _                                 ____                   _           
+             | |                               |  _ \                 | |          
+             | |     ___  __ _  __ _  ___ _   _| |_) | __ _ _ __   ___| |__   ___  
+             | |    / _ \/ _` |/ _` |/ __| | | |  _ < / _` | '_ \ / __| '_ \ / _ \ 
+             | |___|  __/ (_| | (_| | (__| |_| | |_) | (_| | | | | (__| | | | (_) |
+             |______\___|\__, |\__,_|\___|\__, |____/ \__,_|_| |_|\___|_| |_|\___/ 
+                          __/ |            __/ |                                   
+                         |___/            |___/            
+            
+            ");
+            Console.ForegroundColor = ConsoleColor.White;
+            log.LogInfo("Initalzing HTTP Server");
             // Initalizing HTTP Server
             HTTP http = new HTTP();
             // Creating Thread so it will continue executing rest of the script(including http.GET)
-            Thread ServerThread = new Thread(() => http.ListenMA(new string[] { "http://127.0.0.1:80/", "http://localhost:80/","http://osu.ppy.sh:80/" }));
+            Thread ServerThread = new Thread(() => http.ListenMA(new string[] { "http://127.0.0.1:80/", "http://localhost:80/"}));
             // starting the thread
+            log.LogInfo("Starting HTTP server thread");
             ServerThread.Start();
             // initalizing db connection
-            MySqlConnection connection = new MySqlConnection(database.builder.ConnectionString);
-            // initalizing logs
-            Helpers.Logging log = new Helpers.Logging();
+            log.LogInfo("Initalzing DB connection");
+            MySqlConnection connection = new MySqlConnection(DB.builder.ConnectionString);
+            
             http.get("/web/osu-login.php", "text/html", queryparams =>
             {
                 try
@@ -45,12 +64,10 @@ namespace LegacyBancho
                             return "0";
                         }
 
-
-
                     }
                     else
                     {
-                        return "wtf";
+                        return "You forgot about args";
                     }
                 } catch(Exception e) { return e.Message; }
             });

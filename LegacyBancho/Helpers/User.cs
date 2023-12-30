@@ -10,6 +10,7 @@ namespace LegacyBancho.Helpers
 {
     public class User
     {
+        Helpers.Logging logs = new Helpers.Logging();
         public MySqlDataReader FindUserByUsername(MySqlConnection connection, string userName)
         {
             using (var command = connection.CreateCommand())
@@ -20,8 +21,40 @@ namespace LegacyBancho.Helpers
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
-                var result = command.ExecuteReader();
-                return result;
+                try
+                {
+                    var result = command.ExecuteReader();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    logs.LogError("An error occured in FindUserByUsername()\n " + ex.Message);
+                    return null;
+                }
+                
+            }
+        }
+        public bool UpdateTotalScore(MySqlConnection connection, int uid, int NewScore)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"UPDATE `users` SET `score`=@score WHERE UserId = @uid";
+                command.Parameters.AddWithValue("@score", NewScore);
+                command.Parameters.AddWithValue("@uid", uid);
+
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
+
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return true;
+                } catch (Exception ex)
+                {
+                    logs.LogError("An error occured in UpdateTotalScore()\n " + ex.Message);
+                    return false;
+                }
+
             }
         }
     }
