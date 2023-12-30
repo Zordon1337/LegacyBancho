@@ -8,10 +8,10 @@ Loading Players Stats(currently server setting because no db)
 ```
 ### TODO
 
-~~Move everything to mysql~~ DONE
-~~Add score submitting~~ DONE
-make api
-make frontend
+~~Move everything to mysql~~ DONE <br/>
+~~Add score submitting~~ DONE <br/>
+make api <br/>
+make frontend <br/>
 
 
 ### How to Compile, if you don't want just download build from releases
