@@ -5,6 +5,7 @@
 Logging in and verifying password with database
 Global Scores
 Loading Players Stats(From database)
+submiting scores
 ```
 ### TODO
 
@@ -13,7 +14,7 @@ Loading Players Stats(From database)
 make api <br/>
 make frontend <br/>
 Documentation of Osu! b222 protcol
-
+Make server stable
 
 ### How to Compile, if you don't want just download build from releases
 
