@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LegacyBancho
@@ -20,9 +21,20 @@ namespace LegacyBancho
             Password = password,
             Database = db,
         };
+        static Helpers.Logging logs = new Helpers.Logging();
         public static bool CheckLogin(MySqlConnection connection, string u, string p)
         {
-            connection.Open();
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception ex)
+            {
+                logs.LogError("Attempted to connect to the db, but error occured: " + ex.Message);
+                logs.LogInfo("Attempting to reconnect in 5 Sec");
+                Thread.Sleep(5000);
+                connection.Open();
+            }
 
             var command = connection.CreateCommand();
             command.CommandText = @"SELECT * FROM users WHERE Username = @user AND Password = @pass;";
@@ -38,7 +50,17 @@ namespace LegacyBancho
         }
         public static string HandleStatoth(MySqlConnection connection, string u)
         {
-            connection.Open();
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception ex)
+            {
+                logs.LogError("Attempted to connect to the db, but error occured: " + ex.Message);
+                logs.LogInfo("Attempting to reconnect in 5 Sec");
+                Thread.Sleep(5000);
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.CommandText = @"SELECT * FROM users WHERE Username = @user;";
             command.Parameters.AddWithValue("@user", u);
@@ -55,6 +77,45 @@ namespace LegacyBancho
             connection.Close();
             return prepared;
 
+        }
+        public static string HandleScores(MySqlConnection connection, string checksum)
+        {
+            try
+            {
+                connection.Open();
+            } catch (Exception ex)
+            {
+                logs.LogError("Attempted to connect to the db,\nbut error occured: " + ex.Message);
+                logs.LogInfo("Attempting to reconnect in 5 Sec");
+                Thread.Sleep(5000);
+                connection.Open();
+            }
+            var command = connection.CreateCommand();
+            command.CommandText = @"SELECT * FROM scores WHERE Checksum = @c;";
+            command.Parameters.AddWithValue("@c", checksum);
+            
+            string prepared = "";
+            try
+            {
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (!reader.HasRows)
+
+                        return "NoRows";
+                    while (reader.HasRows)
+                    {
+                        prepared += $"{reader["onlineId"].ToString()}|{reader["playerName"].ToString()}|{reader["totalScore"].ToString()}|{reader["maxCombo"].ToString()}|{reader["count50"].ToString()}|{reader["count100"].ToString()}|{reader["count300"].ToString()}|{reader["countMiss"].ToString()}|{reader["countKatu"].ToString()}|{reader["countGeki"].ToString()}|{reader["perfect"].ToString()}|{reader["enabledMods"].ToString()}|{reader["UserID"].ToString()}|{reader["AvatarFileName"].ToString()}\n";
+                    }
+                }
+            } catch(Exception ex)
+            {
+                logs.LogError("Attempted to execute command,\nbut error occured: " + ex.Message);
+            }
+            
+            
+            connection.Close();
+            return prepared;
         }
     }
 }

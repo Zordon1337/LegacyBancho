@@ -18,8 +18,10 @@ namespace LegacyBancho
             Thread ServerThread = new Thread(() => http.ListenMA(new string[] { "http://127.0.0.1:80/", "http://localhost:80/","http://osu.ppy.sh:80/" }));
             // starting the thread
             ServerThread.Start();
+            // initalizing db connection
             MySqlConnection connection = new MySqlConnection(database.builder.ConnectionString);
-            
+            // initalizing logs
+            Helpers.Logging log = new Helpers.Logging();
             http.Get("/web/osu-login.php", "text/html", queryparams =>
             {
                 try
@@ -96,12 +98,14 @@ namespace LegacyBancho
                 string f = null; // beatmap filename
 
                 // onlineId(int)|playerName(string?)|totalScore(int)|maxCombo(int)|count50(int)|count100(int)|count300(int)|countMiss(int)|countKatu(int)|countGeki(int)|perfect(bool)|enabledMods(int)|user.Id(int)|user.AvatarFilename(String?)|date(DateTime)
-                string result = "1|Zordon|1337|420|0|0|420|0|0|0|true|8|1|1.png|0\n";
-                for(int i = 0; i <= 250;i++)
+                if (queryparams.TryGetValue("c", out c))
                 {
-                    result += $"{new Random().Next(1,2500)}|{new Random().Next(99999, 99999999)}|1337|420|0|0|420|0|0|0|true|8|{new Random().Next(1, 2500)}|avatar.png|0\n";
+                    return database.HandleScores(connection, c);
+                } else
+                {
+                    return "NoArgs";
                 }
-                return result;
+                
             });
             http.Get("/web/osu-submit.php", "text/html", queryparams =>
             {
