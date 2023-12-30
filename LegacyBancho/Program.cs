@@ -22,7 +22,7 @@ namespace LegacyBancho
             MySqlConnection connection = new MySqlConnection(database.builder.ConnectionString);
             // initalizing logs
             Helpers.Logging log = new Helpers.Logging();
-            http.Get("/web/osu-login.php", "text/html", queryparams =>
+            http.get("/web/osu-login.php", "text/html", queryparams =>
             {
                 try
                 {
@@ -49,7 +49,7 @@ namespace LegacyBancho
                     }
                 } catch(Exception e) { return e.Message; }
             });
-            http.Get("/web/osu-statoth.php", "text/html", queryparams =>
+            http.get("/web/osu-statoth.php", "text/html", queryparams =>
             {
                 string u = null; // username
                 string c = null; // it is some sort of md5 encrypted string which is combined AcutalName(idk peppy meant with this) and string "prettyplease!!!"
@@ -69,7 +69,7 @@ namespace LegacyBancho
                     return "Fail";
                 }
             });
-            http.Get("/rating/ingame-rate.php", "text/html", queryparams =>
+            http.get("/rating/ingame-rate.php", "text/html", queryparams =>
             {
                 string u = null; // user(username)
                 string p = null; // user password
@@ -92,7 +92,7 @@ namespace LegacyBancho
                 }
                 return "Not OK";
             });
-            http.Get("/web/osu-getscores2.php", "text/html", queryparams =>
+            http.get("/web/osu-getscores2.php", "text/html", queryparams =>
             {
                 string c = null; // beatmap checksum
                 string f = null; // beatmap filename
@@ -107,7 +107,7 @@ namespace LegacyBancho
                 }
                 
             });
-            http.Get("/web/osu-submit.php", "text/html", queryparams =>
+            http.post("/web/osu-submit.php", "text/html", queryparams =>
             {
                 string score = null; // look at BeatMapSendData Struct
                 string pass = null; // hashed password;
@@ -132,8 +132,10 @@ namespace LegacyBancho
                         enabledMods = Int32.Parse(_splitted[13]),
                         pass = bool.Parse(_splitted[14])
 
+
                     };
                     Console.WriteLine(data);
+                    database.WriteScores(connection, data);
                     return "ok"; // also client doesn't care what you gonna response with
 
                 } else
@@ -141,7 +143,7 @@ namespace LegacyBancho
                     return "parameters missing";
                 }
             });
-            http.Get("/forum/download.php", "application/octet-stream", queryparams =>
+            http.get("/forum/download.php", "application/octet-stream", queryparams =>
             {
                 if(queryparams.TryGetValue("avatar", out var avatar))
                 {
@@ -179,7 +181,16 @@ namespace LegacyBancho
         public string ranking; // ranking grade(X, S, A, B, C, F, D, XH, SH) this does not affect leaderboard, because the leaderboard grade is calculated by client itself
         public int enabledMods; // enabled mods
         public bool pass; // passed?
+
+        public override string ToString()
+        {
+            return $"fileChecksum: {fileChecksum}, sUsername: {sUsername}, onlineScoreChecksum: {onlineScoreChecksum}, " +
+                   $"count300: {count300}, count100: {count100}, count50: {count50}, countGeki: {countGeki}, " +
+                   $"countKatu: {countKatu}, countMiss: {countMiss}, totalScore: {totalScore}, maxCombo: {maxCombo}, " +
+                   $"perfect: {perfect}, ranking: {ranking}, enabledMods: {enabledMods}, pass: {pass}";
+        }
     }
-    
-    
+
+
+
 }
