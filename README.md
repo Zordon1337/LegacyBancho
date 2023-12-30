@@ -2,9 +2,9 @@
 
 ### Whats working?
 ```
-Basic Authenticating without database
-Loading Global Scores(currently random score without database)
-Loading Players Stats(currently server setting because no db)
+Logging in and verifying password with database
+Global Scores
+Loading Players Stats(From database)
 ```
 ### TODO
 
@@ -12,6 +12,7 @@ Loading Players Stats(currently server setting because no db)
 ~~Add score submitting~~ DONE <br/>
 make api <br/>
 make frontend <br/>
+Documentation of Osu! b222 protcol
 
 
 ### How to Compile, if you don't want just download build from releases
