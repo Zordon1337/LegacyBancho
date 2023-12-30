@@ -7,7 +7,12 @@ using System.Threading;
 
 namespace LegacyBancho
 {
-    
+    /*
+     * Thank you for looking into this code
+     * it's mess but it works
+     * 
+     * Made by Zordon 2023-2023
+     */
     internal class Program
     {
         static void Main(string[] args)
@@ -31,7 +36,7 @@ namespace LegacyBancho
                     if (queryparams.TryGetValue("username", out u) && queryparams.TryGetValue("password", out p))
                     {
                         
-                        if (database.CheckLogin(connection, u,p))
+                        if (Handlers.Auth.CheckLogin(connection, u,p))
                         {
                             return "1";
                         }
@@ -61,7 +66,7 @@ namespace LegacyBancho
                 //int UserID = 1; // used to fetch avatar but i don't know how to implement it yet
                 if (queryparams.TryGetValue("u", out u) && queryparams.TryGetValue("c", out c))
                 {
-                    string PreparedString = database.HandleStatoth(connection, u);
+                    string PreparedString = Handlers.Stats.HandleStatoth(connection, u);
                     return PreparedString;
                 }
                 else
@@ -100,7 +105,7 @@ namespace LegacyBancho
                 // onlineId(int)|playerName(string?)|totalScore(int)|maxCombo(int)|count50(int)|count100(int)|count300(int)|countMiss(int)|countKatu(int)|countGeki(int)|perfect(bool)|enabledMods(int)|user.Id(int)|user.AvatarFilename(String?)|date(DateTime)
                 if (queryparams.TryGetValue("c", out c))
                 {
-                    return database.HandleScores(connection, c);
+                    return Handlers.Score.GetScores(connection, c);
                 } else
                 {
                     return "NoArgs";
@@ -135,7 +140,7 @@ namespace LegacyBancho
 
                     };
                     Console.WriteLine(data);
-                    database.WriteScores(connection, data);
+                    Handlers.Score.WriteScores(connection, data);
                     return "ok"; // also client doesn't care what you gonna response with
 
                 } else
