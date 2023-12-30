@@ -12,18 +12,30 @@ namespace LegacyBancho.Handlers
     public class Stats
     {
         static Helpers.Logging logs = new Helpers.Logging();
+        static Helpers.User user = new Helpers.User();
         public static string HandleStatoth(MySqlConnection connection, string u)
         {
-            try
+            int totalplayerscore = Helpers.Calculate.GetPlayerTotalScore(connection, u); // getting it before any action cuz i don't want to trigger error
+            if(connection.State != System.Data.ConnectionState.Open)
             {
-                connection.Open();
-            }
-            catch (Exception ex)
-            {
-                logs.LogError("Attempted to connect to the db, but error occured: " + ex.Message);
-                logs.LogInfo("Attempting to reconnect in 5 Sec");
-                Thread.Sleep(5000);
-                connection.Open();
+                try
+                {
+                    if(connection.State == System.Data.ConnectionState.Closed)
+                    {
+                        connection.Open();
+                        
+                    }
+                    Thread.Sleep(1500);
+
+                }
+                catch (Exception ex)
+                {
+                    logs.LogError("Attempted to connect to the db, but error occured: " + ex.Message);
+                    logs.LogInfo("Attempting to reconnect in 3 Sec");
+                    Thread.Sleep(3000);
+                    connection.Open();
+                    Thread.Sleep(1500);
+                }
             }
             var command = connection.CreateCommand();
             command.CommandText = @"SELECT * FROM users WHERE Username = @user;";
@@ -33,7 +45,9 @@ namespace LegacyBancho.Handlers
             string prepared = "";
             if (reader.HasRows)
             {
-                prepared = $"{reader["Score"].ToString()}|{reader["Accuracy"].ToString()}|unknown1|unknown2|{reader["CurrentRank"].ToString()}|{reader["UserId"].ToString()}.png";
+                
+                
+                prepared = $"{totalplayerscore}|{reader["Accuracy"].ToString()}|unknown1|unknown2|{reader["CurrentRank"].ToString()}|{reader["UserId"].ToString()}.png";
             }
             else
             {

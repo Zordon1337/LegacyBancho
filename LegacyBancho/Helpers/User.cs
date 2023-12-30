@@ -20,15 +20,19 @@ namespace LegacyBancho.Helpers
 
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
-
+                var result = command.ExecuteReader();
                 try
                 {
-                    var result = command.ExecuteReader();
-                    return result;
+                    if(result.HasRows)
+                    {
+                        return result;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
                     logs.LogError("An error occured in FindUserByUsername()\n " + ex.Message);
+                    result.Close();
                     return null;
                 }
                 

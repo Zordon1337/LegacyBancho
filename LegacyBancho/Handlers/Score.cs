@@ -20,7 +20,7 @@ namespace LegacyBancho.Handlers
 
             try
             {
-                if (connection.State != ConnectionState.Open)
+                if (connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting)
                     connection.Open();
 
                 using (var command = connection.CreateCommand())
@@ -57,18 +57,24 @@ namespace LegacyBancho.Handlers
             try
             {
                 var user = User.FindUserByUsername(connection, score.sUsername);
-                if(!user.HasRows)
+                int user_id = 0;
+                if (user != null && user.Read())
+                {
+                    user_id = Int32.Parse(user["userId"].ToString());
+                    connection.Close();
+                }
+                else
                 {
                     return "user_not_found";
                 }
-                int username_id = Int32.Parse(user["userId"].ToString());
-
+                if(connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting)
+                    connection.Open();
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = @"INSERT INTO `scores`(`Checksum`, `onlineId`, `playerName`, `totalScore`, `maxCombo`, `count50`, `count100`, `count300`, `countMiss`, `countKatu`, `countGeki`, `perfect`, `enabledMods`, `UserID`, `AvatarFileName`) 
                             VALUES (@cs, @oid, @un, @score, @combo, @count50, @count100, @count300, @countMiss, @countKatu, @countGeki, @perfect, @enabledMods, @uid, @filename)";
                     command.Parameters.AddWithValue("@cs", score.fileChecksum);
-                    command.Parameters.AddWithValue("@oid", username_id);
+                    command.Parameters.AddWithValue("@oid", user_id);
                     command.Parameters.AddWithValue("@un", score.sUsername);
                     command.Parameters.AddWithValue("@score", score.totalScore);
                     command.Parameters.AddWithValue("@combo", score.maxCombo);
@@ -80,8 +86,8 @@ namespace LegacyBancho.Handlers
                     command.Parameters.AddWithValue("@countGeki", score.countGeki);
                     command.Parameters.AddWithValue("@perfect", Calculate.CalculatePerfect(score));
                     command.Parameters.AddWithValue("@enabledMods", score.enabledMods);
-                    command.Parameters.AddWithValue("@uid", username_id);
-                    command.Parameters.AddWithValue("@filename", $"{username_id}.png");
+                    command.Parameters.AddWithValue("@uid", user_id);
+                    command.Parameters.AddWithValue("@filename", $"{user_id}.png");
 
                     if (score.pass)
                     {
