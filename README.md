@@ -1,4 +1,4 @@
-![image](https://github.com/Zordon1337/LegacyBancho/assets/65111609/9d9c2854-d062-4581-8196-5058960008c0)# OSU b222 bancho
+# OSU b222 bancho
 
 ### Whats working?
 ```
