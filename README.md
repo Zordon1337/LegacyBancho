@@ -15,10 +15,10 @@ make api <br/>
 make frontend <br/>
 Documentation of Osu! b222 protcol <br/>
 Make server stable <br/>
-Add Replay Handler(sending on submit, and accessing it from global tops)
-Make beatmap status(Ranked, non ranked, waiting, need to update)
-Add Total Accuracy
-Implement Basic IRC
+Add Replay Handler(sending on submit, and accessing it from global tops)<br/>
+~~Make beatmap status(Ranked, non ranked, waiting, need to update)~~ <br/>
+Add Total Accuracy<br/>
+Implement Basic IRC<br/>
 
 
 ### How to Compile, if you don't want just download build from releases
@@ -32,6 +32,8 @@ Implement Basic IRC
 7. now u need to redirect the osu endpoints to localhost
 there are several ways to do that such as Fiddler Script, Hosts file, Patching Client
 but the easiest one is to just use <a href="https://github.com/minisbett/ultimate-osu-server-switcher">ultimate-osu-server-switcher</a>
+8. go to SERVER_IP:80/register to create your account
+9. open osu and enjoy
 
 
 ### Screenshots
