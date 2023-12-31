@@ -29,5 +29,22 @@ Register: <a href='/register'>HERE</a></pre>
 ";
             return Index;
         }
+        public static string HandleRegPage()
+        {
+            string Reg = @"
+<div style='text-align:center;'>
+<pre>
+<form action='/register' method='POST'>
+<p> username </p>
+<input name='u'/>
+<p> password </p>
+<input name='p' type='password'/>
+<br/>
+<input type='submit' value='register'/>
+</form>
+</div>";
+            return Reg;
+        }
     }
+    
 }

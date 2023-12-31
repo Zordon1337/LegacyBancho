@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Security.Cryptography;
 namespace LegacyBancho.Helpers
 {
     public class Calculate
@@ -69,6 +69,24 @@ namespace LegacyBancho.Helpers
             {
                 // we do NOT want to turn our cpu into Galaxy Note 7(jk)
                 return TotalScore;
+            }
+        }
+        public static string ComputeMD5Hash(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                // Convert the input string to a byte array and compute the hash
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
             }
         }
     }

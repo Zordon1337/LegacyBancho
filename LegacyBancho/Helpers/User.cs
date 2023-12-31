@@ -88,5 +88,16 @@ namespace LegacyBancho.Helpers
                 }
             }
         }
+        public int GetDBUsersAmount(MySqlConnection connection)
+        {
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+
+            using (MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM users", connection))
+            {
+                int rows = Convert.ToInt32(command.ExecuteScalar());
+                return rows;
+            }
+        }
     }
 }

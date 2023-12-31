@@ -1,4 +1,5 @@
-﻿using LibHTTP;
+﻿using LegacyBancho.Helpers;
+using LibHTTP;
 using MySqlConnector;
 using System;
 using System.Data.SqlClient;
@@ -185,6 +186,18 @@ namespace LegacyBancho
             http.get("/", "text/html", queryparams =>
             {
                 return Handlers.Static.HandleIndex();
+            });
+            http.get("/register", "text/html", queryparams =>
+            {
+                return Handlers.Static.HandleRegPage();
+            });
+            http.post("/register", "text/plain", (POSTPARAM) =>
+            {
+                POSTPARAM.TryGetValue("u", out var u);
+                POSTPARAM.TryGetValue("p", out var p);
+                /*return ($"user:{u}\npass:{Calculate.ComputeMD5Hash(p)}");*/
+                return Handlers.Auth.CreateAccount(connection, u, p);
+
             });
             Console.ReadKey(); // we don't want to auto-close the server after initalizing
         }
