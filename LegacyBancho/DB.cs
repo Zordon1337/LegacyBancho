@@ -59,7 +59,7 @@ namespace LegacyBancho
         {
             var command = connection.CreateCommand();
             command.CommandText = (@"
-                CREATE TABLE `beatmaps` (
+                CREATE TABLE IF NOT EXISTS `beatmaps` (
                 `id` int(11) NOT NULL,
                 `checksum` text NOT NULL,
                 `status` int(11) NOT NULL,
@@ -67,7 +67,7 @@ namespace LegacyBancho
                 `ranked_data` text NOT NULL,
                 `creator` text NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-                INSERT INTO `beatmaps` (`id`, `checksum`, `status`, `submit_date`, `ranked_data`, `creator`) VALUES
+                REPLACE INTO `beatmaps`  (`id`, `checksum`, `status`, `submit_date`, `ranked_data`, `creator`) VALUES
                 (1, 'cf8bd375f2708f152562a919247ba09a', 2, '2007-XX-XX', '2007-XX-XX', 'peppy'),
                 (2, '974b72f33a25bd5ef297bd8682d7fa79', 2, '', '', ''),
                 (3, 'ea0df9f890e7e9e7ad4d3862a7823359', 2, '', '', ''),
