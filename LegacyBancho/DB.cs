@@ -28,20 +28,24 @@ namespace LegacyBancho
         
         public static void Init(MySqlConnection connection)
         {
-            if ((connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting))
-            {
-                connection.Open();
-                Thread.Sleep(2000);
+           
+            
+                
                 CreateBeatmapsTable(connection);
                 CreateScoresTable(connection);
                 CreateUsersTable(connection);
                 
 
 
-            }
+            
         }
         private static void CreateUsersTable(MySqlConnection connection)
         {
+            if ((connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting))
+            {
+                Thread.Sleep(500);
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.CommandText = (@"
                 CREATE TABLE IF NOT EXISTS `users` (
@@ -54,9 +58,15 @@ namespace LegacyBancho
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
                 COMMIT;");
             command.ExecuteNonQuery();
+            connection.Close();
         }
         private static void CreateBeatmapsTable(MySqlConnection connection)
         {
+            if ((connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting))
+            {
+                Thread.Sleep(500);
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.CommandText = (@"
                 CREATE TABLE IF NOT EXISTS `beatmaps` (
@@ -74,9 +84,15 @@ namespace LegacyBancho
                 (4, '774861583d38346a3876ade4116ebbc0', 2, '', '', '');
                 COMMIT;");
             command.ExecuteNonQuery();
+            connection.Close();
         }
         private static void CreateScoresTable(MySqlConnection connection)
         {
+            if ((connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting))
+            {
+                Thread.Sleep(500);
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.CommandText = (@"
                 CREATE TABLE IF NOT EXISTS `scores` (
@@ -98,6 +114,7 @@ namespace LegacyBancho
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
                 COMMIT;");
             command.ExecuteNonQuery();
+            connection.Close();
 
         }
 
