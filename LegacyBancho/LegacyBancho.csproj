@@ -153,6 +153,7 @@
     <Compile Include="Handlers\Score.cs" />
     <Compile Include="Handlers\Static.cs" />
     <Compile Include="Handlers\Stats.cs" />
+    <Compile Include="Helpers\Beatmaps.cs" />
     <Compile Include="Helpers\Calculate.cs" />
     <Compile Include="Helpers\Logging.cs" />
     <Compile Include="Helpers\User.cs" />
