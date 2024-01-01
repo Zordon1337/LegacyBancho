@@ -34,7 +34,7 @@ namespace LegacyBancho.Handlers
                             return "";
 
                         if (Helpers.Beatmaps.GetBeatmapStatus(connection, checksum) != 2)
-                            prepared += Helpers.Beatmaps.GetBeatmapStatus(connection,checksum);
+                            prepared += Helpers.Beatmaps.GetBeatmapStatus(connection,checksum) + "\n";
                         while (reader.Read())
                         {
                             prepared += $"{reader["onlineId"].ToString()}|{reader["playerName"].ToString()}|{reader["totalScore"].ToString()}|{reader["maxCombo"].ToString()}|{reader["count50"].ToString()}|{reader["count100"].ToString()}|{reader["count300"].ToString()}|{reader["countMiss"].ToString()}|{reader["countKatu"].ToString()}|{reader["countGeki"].ToString()}|{reader["perfect"].ToString()}|{reader["enabledMods"].ToString()}|{reader["UserID"].ToString()}|{reader["AvatarFileName"].ToString()}|{DateTime.Now}\n";
