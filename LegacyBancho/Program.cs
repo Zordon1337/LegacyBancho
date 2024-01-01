@@ -46,7 +46,7 @@ namespace LegacyBancho
             // initalizing db connection
             log.LogInfo("Initalzing DB connection");
             MySqlConnection connection = new MySqlConnection(DB.builder.ConnectionString);
-            
+            DB.Init(connection);
             http.get("/web/osu-login.php", "text/html", queryparams =>
             {
                 try
@@ -173,7 +173,7 @@ namespace LegacyBancho
                     if(avatar != null)
                     {
                         //return Convert.ToBase64String(System.IO.File.ReadAllBytes($"./avatars/{avatar}"));
-                        return Convert.ToBase64String(System.IO.File.ReadAllBytes($"./avatars/1.png"));
+                        return Convert.ToBase64String(new byte[] { 0x0,0x1});
                     } else
                     {
                         return Convert.ToBase64String(Encoding.UTF8.GetBytes("server does NOT know what are you yapping about"));
