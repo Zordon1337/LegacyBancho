@@ -46,7 +46,7 @@ namespace LegacyBancho
             // initalizing db connection
             log.LogInfo("Initalzing DB connection");
             MySqlConnection connection = new MySqlConnection(DB.builder.ConnectionString);
-            
+            DB.Init(connection);
             http.get("/web/osu-login.php", "text/html", queryparams =>
             {
                 try
