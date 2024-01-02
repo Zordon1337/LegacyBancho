@@ -22,7 +22,7 @@ namespace LegacyBancho.Handlers
             {
                 if (connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting)
                     connection.Open();
-
+                int mapstatus = Helpers.Beatmaps.GetBeatmapStatus(connection, checksum);
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = @"SELECT * FROM scores WHERE Checksum = @c;";
@@ -30,14 +30,15 @@ namespace LegacyBancho.Handlers
 
                     using (var reader = command.ExecuteReader())
                     {
-                        if (!reader.HasRows)
-                            return "";
 
-                        if (Helpers.Beatmaps.GetBeatmapStatus(connection, checksum) != 2)
-                            prepared += Helpers.Beatmaps.GetBeatmapStatus(connection,checksum) + "\n";
+
+                        if (mapstatus != 2)
+                            prepared = +mapstatus + "\n";
+                        if (!reader.HasRows)
+                            return prepared;
                         while (reader.Read())
                         {
-                            prepared += $"\n{reader["onlineId"].ToString()}|{reader["playerName"].ToString()}|{reader["totalScore"].ToString()}|{reader["maxCombo"].ToString()}|{reader["count50"].ToString()}|{reader["count100"].ToString()}|{reader["count300"].ToString()}|{reader["countMiss"].ToString()}|{reader["countKatu"].ToString()}|{reader["countGeki"].ToString()}|{reader["perfect"].ToString()}|{reader["enabledMods"].ToString()}|{reader["UserID"].ToString()}|{reader["AvatarFileName"].ToString()}|{DateTime.Now}\n";
+                            prepared += $"{reader["onlineId"].ToString()}|{reader["playerName"].ToString()}|{reader["totalScore"].ToString()}|{reader["maxCombo"].ToString()}|{reader["count50"].ToString()}|{reader["count100"].ToString()}|{reader["count300"].ToString()}|{reader["countMiss"].ToString()}|{reader["countKatu"].ToString()}|{reader["countGeki"].ToString()}|{reader["perfect"].ToString()}|{reader["enabledMods"].ToString()}|{reader["UserID"].ToString()}|{reader["AvatarFileName"].ToString()}|{DateTime.Now}\n";
                         }
                     } 
                 }

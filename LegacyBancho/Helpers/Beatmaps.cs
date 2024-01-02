@@ -40,5 +40,24 @@ namespace LegacyBancho.Helpers
                 }
             }
         }
+        public static bool DoesMapExist(MySqlConnection connection, string c)
+        {
+            if (connection.State != ConnectionState.Open && connection.State != ConnectionState.Connecting)
+                connection.Open();
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT * FROM `beatmaps` WHERE checksum = @c";
+                command.Parameters.AddWithValue("@c", c);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                        return false;
+                    else
+                        return true;
+
+                }
+            }
+        }
     }
 }

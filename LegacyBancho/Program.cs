@@ -118,7 +118,7 @@ namespace LegacyBancho
             http.get("/web/osu-getscores2.php", "text/html", queryparams =>
             {
                 string c = null; // beatmap checksum
-                string f = null; // beatmap filename
+                //string f = null; // beatmap filename
 
                 // onlineId(int)|playerName(string?)|totalScore(int)|maxCombo(int)|count50(int)|count100(int)|count300(int)|countMiss(int)|countKatu(int)|countGeki(int)|perfect(bool)|enabledMods(int)|user.Id(int)|user.AvatarFilename(String?)|date(DateTime)
                 if (queryparams.TryGetValue("c", out c))
@@ -173,7 +173,7 @@ namespace LegacyBancho
                     if(avatar != null)
                     {
                         //return Convert.ToBase64String(System.IO.File.ReadAllBytes($"./avatars/{avatar}"));
-                        return Convert.ToBase64String(new byte[] { 0x0,0x1});
+                        return Convert.ToBase64String(new byte[] { 0x0,0x1}); // random shit to just not crash server(the greatest(worst*) dev in the universe
                     } else
                     {
                         return Convert.ToBase64String(Encoding.UTF8.GetBytes("server does NOT know what are you yapping about"));
@@ -199,6 +199,21 @@ namespace LegacyBancho
                 return Handlers.Auth.CreateAccount(connection, u, p);
 
             });
+            /*http.post("/web/osu-bmsubmit-getid2.php", "application/x-www-form-urlencoded", param =>
+            {
+                // Access GET values
+                param.TryGetValue("u", out var u);
+                param.TryGetValue("p", out var p);
+                param.TryGetValue("r", out var r);
+                param.TryGetValue("osu", out var file);
+
+                
+                Console.WriteLine($"u: {u}, p: {p}, r: {r}, file: {file}");
+                Console.WriteLine(file);
+                return Handlers.BeatmapEditor.HandleMapUpload(connection, u, p, r);
+
+
+            });*/
             Console.ReadKey(); // we don't want to auto-close the server after initalizing
         }
     }

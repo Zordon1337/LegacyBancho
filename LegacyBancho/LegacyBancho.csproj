@@ -93,7 +93,7 @@
     </Reference>
     <Reference Include="LibHTTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LibHTTP.dll</HintPath>
+      <HintPath>..\..\LibHTTP\LibHTTP\bin\Release\LibHTTP.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -150,6 +150,7 @@
   <ItemGroup>
     <Compile Include="DB.cs" />
     <Compile Include="Handlers\Auth.cs" />
+    <Compile Include="Handlers\BeatmapEditor.cs" />
     <Compile Include="Handlers\Score.cs" />
     <Compile Include="Handlers\Static.cs" />
     <Compile Include="Handlers\Stats.cs" />

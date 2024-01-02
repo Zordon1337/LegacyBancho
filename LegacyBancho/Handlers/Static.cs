@@ -8,6 +8,10 @@ namespace LegacyBancho.Handlers
 {
     public class Static
     {
+        /*
+         * basic ui, probably gonna get replaced with bit modded
+         * old osu website(like in anchor project)
+         */
         public static string HandleIndex()
         {
             string Index = @"<pre><p style='color:purple'>
