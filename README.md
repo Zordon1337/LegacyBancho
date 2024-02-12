@@ -1,5 +1,10 @@
 # OSU b222 bancho
-
+## DEPRECATED! ⚠
+its been 2 months since development start and one month since last update, i decided there is no point
+of making server for only one version and on custom http framework while osu was designed to use PHP,
+since last 2 days i've started working on new server in PHP but this time it supports every client
+using http to communicate(b70-b222) and it is more stable than this so, i recommend using the 
+<a href="https://github.com/Zordon1337/osu2007srv">PHP "rewrite"</a> instead of this
 ### Whats working?
 ```
 Logging in and verifying password with database
